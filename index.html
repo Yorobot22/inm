@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agustín González Afonso - Negocios Inmobiliarios</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header id="header">
+        <nav>
+            <a href="#" class="logo">
+                <img src="/static/logo/Logo.png" alt="Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-name">Agustín González Afonso</span>
+                    <span class="logo-subtitle">NEGOCIOS INMOBILIARIOS</span>
+                </div>
+            </a>
+            <button class="mobile-menu-toggle" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links-container" id="navLinks">
+                <div class="search-wrapper header-search">
+                    <div class="search-container">
+                        <div class="search-fields">
+                            <div class="field-group">
+                                <label>Operación</label>
+
+                                <select id="operationSelector" onchange="setOperation(this.value)">
+                                    <option value="Venta" selected>Venta</option>
+                                    <option value="Alquiler">Alquiler</option>
+                                </select>
+                            </div>
+                            <div class="field-group">
+                                <label>Ubicación</label>
+                                <input type="text" id="locationSearch" placeholder="¿Donde buscar?">
+                            </div>
+                            <div class="field-group">
+                                <label>Tipo</label>
+                                <select id="propertyType">
+                                    <option value="">Tipo de Propiedad</option>
+                                    <option value="Departamento">Departamento</option>
+                                    <option value="Casa">Casa</option>
+                                    <option value="Oficina">Oficina</option>
+                                    <option value="Local">Local</option>
+                                </select>
+                            </div>
+                            <div class="field-group">
+                                <label>Ambientes</label>
+                                <select id="rooms">
+                                    <option value="">Ambientes</option>
+                                    <option value="1">1 Amb</option>
+                                    <option value="2">2 Amb</option>
+                                    <option value="3">3 Amb</option>
+                                    <option value="4">+4 Amb</option>
+                                </select>
+                            </div>
+                            <button class="search-btn" onclick="searchProperties()">
+                                <i class="fas fa-search"></i> <span>Buscar</span>
+                            </button>
+                        </div>
+                        <div class="header-quick-links">
+                            <h2><a href="/"> Volver al inicio </a></h2>
+                            <h2><a href="/venta.html"> Venta </a></h2>
+                            <h2><a href="/alquiler.html"> Alquiler </a></h2>
+                            <h2><a href="/tasaciones.html"> Tasaciones </a></h2>
+                            <h2><a href="/servicios.html"> Servicios </a></h2>
+                            <h2><a href="/contacto.html"> Contacto </a></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </nav>
+    </header>
+
+    <section class="hero">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="/static/img/hero.mp4" type="video/mp4">
+            Tu navegador no soporta el tag de video.
+        </video>
+        <h1>Tu próximo proyecto comienza aquí</h1>
+    </section>
+
+    <main class="container" id="propiedades">
+        <div class="section-header">
+            <span>Oportunidades</span>
+            <h2 class="section-title">Propiedades Destacadas</h2>
+        </div>
+        <div class="properties-grid" id="propertiesGrid">
+            <!-- Items loaded via JS -->
+        </div>
+    </main>
+
+    <footer id="contacto">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="#" class="logo">
+                    <img src="/static/logo/logo.png" alt="Logo" class="logo-img" ;">
+                    <div class="logo-text">
+                        <span class="logo-name">Agustín González Afonso</span>
+                        <span class="logo-subtitle">NEGOCIOS INMOBILIARIOS</span>
+                    </div>
+                </a>
+                <p>Líderes en el mercado inmobiliario premium, brindando asesoramiento integral y personalizado para que
+                    encuentres el lugar de tus sueños.</p>
+            </div>
+            <div class="footer-col">
+                <ul class="footer-links">
+
+                </ul>
+            </div>
+
+            <div class="footer-col">
+
+                <h4>Contacto</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-map-marker-alt"></i> Buenos Aires, Argentina</li>
+                    <li><i class="fas fa-phone"></i> +54 11 6013 0901</li>
+                    <li><i class="fas fa-envelope"></i> info@agustingonzalezafonso.com.ar
+                </ul>
+                <a href="https://wa.me/+541160130901" class="whatsapp-btn" target="_blank"
+                    aria-label="Chat en WhatsApp">
+                    <i class="fab fa-whatsapp"></i> Hablar por whatsapp
+                </a>
+
+            </div>
+        </div>
+        <div class=" footer-bottom">
+            &copy; 2025 Agustin Gonzalez Afonso Negocios Inmobiliarios. Todos los derechos reservados.
+        </div>
+    </footer>
+
+
+
+    <script src="/static/js/app.js"></script>
+</body>
+
+</html>

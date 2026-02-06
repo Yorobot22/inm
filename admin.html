@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Agustín González Afonso</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-container {
+            padding: 120px 5% 60px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .admin-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            background: #f8fafc;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 1.2rem;
+            border-radius: var(--radius-md);
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+            transition: var(--transition);
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .status-msg {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            display: none;
+        }
+
+        .status-msg.success {
+            background: #dcfce7;
+            color: #166534;
+            display: block;
+        }
+
+        .status-msg.error {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <nav>
+            <a href="/" class="logo">
+                <img src="/static/logo/Logo.jpg" alt="Logo" class="logo-img">
+                <span>Agustin Gonzalez Afonso</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Volver al Sitio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <div class="admin-card">
+            <div id="editModeBanner"
+                style="display: none; background: var(--secondary); color: white; padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <span><i class="fas fa-edit"></i> MODO EDICIÓN ACTIVADO</span>
+                <button type="button" onclick="cancelEdit()"
+                    style="background: white; color: var(--secondary); border: none; padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer;">CANCELAR</button>
+            </div>
+            <h2 id="formTitle" class="section-title" style="margin-top:0; margin-bottom: 2rem;">Agregar Nueva Propiedad
+            </h2>
+            <form id="propertyForm" enctype="multipart/form-data">
+                <input type="hidden" name="id" id="propertyId">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Título de la Propiedad</label>
+                        <input type="text" name="title" required placeholder="Ej: Penthouse Moderno en Palermo">
+                    </div>
+                    <div class="form-group">
+                        <label>Ubicación</label>
+                        <input type="text" name="location" required placeholder="Ej: Recoleta, CABA">
+                    </div>
+                    <div class="form-group">
+                        <label>Precio</label>
+                        <input type="text" name="price" required placeholder="Ej: USD 250.000">
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Propiedad</label>
+                        <select name="type" required>
+                            <option value="Departamento">Departamento</option>
+                            <option value="Casa">Casa</option>
+                            <option value="Oficina">Oficina</option>
+                            <option value="Local">Local</option>
+                            <option value="Terreno">Terreno</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Operación</label>
+                        <select name="operation" required>
+                            <option value="Venta">Venta</option>
+                            <option value="Alquiler">Alquiler</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Superficie (m²)</label>
+                        <input type="number" name="surface" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Dormitorios</label>
+                        <input type="number" name="bedrooms" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Baños</label>
+                        <input type="number" name="bathrooms" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Destacada</label>
+                        <select name="featured">
+                            <option value="true">Sí</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Fotos (Seleccionar varias)</label>
+                        <input type="file" name="images" multiple accept="image/*">
+                        <p id="imageHelp" style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">*Obligatorio para
+                            nuevas propiedades. En edición, sube fotos solo si deseas reemplazarlas.</p>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Descripción</label>
+                        <textarea name="description" placeholder="Describa la propiedad detalladamente..."
+                            rows="5"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Video (Opcional)</label>
+                        <input type="file" name="video" accept="video/*">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Plano (Opcional - JPG/PNG)</label>
+                        <input type="file" name="floorplan" accept="image/jpeg,image/png,image/jpg">
+                    </div>
+                    <div class="form-group">
+                        <label>Latitud (Opcional)</label>
+                        <input type="text" name="latitude" placeholder="Ej: -34.5875">
+                    </div>
+                    <div class="form-group">
+                        <label>Longitud (Opcional)</label>
+                        <input type="text" name="longitude" placeholder="Ej: -58.3974">
+                    </div>
+                    <p style="grid-column: span 2; font-size: 0.8rem; color: #64748b; margin-top: -1rem;">
+                        <i class="fas fa-info-circle"></i> Para obtener las coordenadas: busca la dirección en Google
+                        Maps,
+                        haz clic derecho sobre el punto y copia las coordenadas.
+                    </p>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">AGREGAR PROPIEDAD</button>
+                <div id="statusMsg" class="status-msg"></div>
+            </form>
+        </div>
+
+        <div class="admin-card" style="margin-top: 2rem;">
+            <h2 class="section-title" style="margin-top:0; margin-bottom: 2rem;">Propiedades Existentes</h2>
+            <div id="propertyList">
+                <p style="text-align: center; color: var(--text-light);">Cargando propiedades...</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/js/admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+[
+    {
+        "id": 1,
+        "title": "Deán Funes 2148",
+        "location": "Parque Patricios CABA",
+        "price": "$1.600.000",
+        "type": "Oficina",
+        "operation": "Alquiler",
+        "surface": 111,
+        "bedrooms": 4,
+        "bathrooms": 2,
+        "featured": true,
+        "description": "Oficina comercial en alquiler ubicada en Parque Patricios, ideal para uso comercial. Cuenta con 111 m2 de superficie construida y 213 m2 de superficie total, distribuida en 2 plantas. Dispone de 4 ambientes y 2 baños, apta para uso profesional y con excelente luminosidad.\r\nLa oficina es ideal para oficinas y tiene una antigüedad de 40 años. La zona de Parque Patricios ofrece fácil acceso a transporte público, incluyendo diversas líneas de autobuses y cercanía a la estación de subte. En los alrededores, se encuentran comercios, bancos y servicios esenciales. Además, la zona cuenta con una creciente oferta gastronómica y espacios verdes para disfrutar. Es una zona mixta, con un ambiente dinámico y en constante desarrollo.\r\n- A ½ cuadra de Avenida Caseros y a 200mtrs de la estación Parque Patricios del subte H\r\n- En el corazón del Distrito Tecnológico y área comercial de Parque Patricios\r\n- Sin expensas, gas instalado (no está actualmente en uso) e instalación eléctrica.\r\n- Sólo uso profesional / comercial\r\n",
+        "images": [
+            "/static/uploads/images/eb520a56-564e-41bb-88b4-3df353febf2c.jpeg",
+            "/static/uploads/images/d557364c-f6c3-4e8b-be86-9033572f1beb.jpeg",
+            "/static/uploads/images/81ce6292-3207-40a6-9905-ea7d4a8b3ae2.jpeg",
+            "/static/uploads/images/2763b9fa-30ef-438c-abfa-f747766f29ad.jpeg",
+            "/static/uploads/images/4c622622-0c17-4c45-a9ad-607f71e482ad.jpeg",
+            "/static/uploads/images/d4f03093-8ec9-4f16-814c-96a754bc461a.jpeg",
+            "/static/uploads/images/fafabfe4-7c04-43d1-8007-b5a7fae3c75a.jpeg"
+        ],
+        "videos": [
+            "/static/uploads/videos/e506b533-bb15-4a36-8c04-bd0ec99858d4.mp4"
+        ],
+        "floorplan": "/static/uploads/images/727f706d-ae59-47c2-9bd2-7598141d75d4.jpg",
+        "latitude": -34.63609,
+        "longitude": -58.40379
+    },
+    {
+        "id": 2,
+        "title": "Galván 3469",
+        "location": "Villa Urquiza",
+        "price": "US$198.000",
+        "type": "Departamento",
+        "operation": "Venta",
+        "surface": 70,
+        "bedrooms": 2,
+        "bathrooms": 2,
+        "featured": true,
+        "description": "Departamento en venta en Villa Urquiza, con una superficie total de 70 m². Cuenta con 2 dormitorios y 2 baños, ideal para familias o profesionales. La propiedad, con disposición al frente y orientación Oeste, goza de gran luminosidad gracias a sus amplios ambientes.\r\nEl departamento dispone de un living comedor, balcón y dormitorio en suite, ofreciendo confort y privacidad. La cocina está integrada al living, creando un espacio social y funcional. Además, el edificio cuenta con ascensor y admite mascotas, siendo también apto para uso profesional. El aire acondicionado frio/calor y la calefacción asegura un ambiente ideal durante todo el año.\r\nUbicado en un edificio de 4 pisos con 3 unidades por planta, este departamento se encuentra en una zona residencial tranquila, pero con fácil acceso a servicios. \r\nVilla Urquiza ofrece una amplia variedad de comercios, supermercados y opciones de transporte público, incluyendo varias líneas de colectivos y cercanía a estaciones de subte. La zona también cuenta con espacios verdes y centros educativos, ideal para un estilo de vida equilibrado.\r\nActualmente tiene renta por 1 año",
+        "images": [
+            "/static/uploads/images/a0afd260-6bcf-4fe7-b2ff-7ac75822a6b1.jpeg",
+            "/static/uploads/images/61dade96-d5f8-4e5f-95b7-92966e18b9ab.png",
+            "/static/uploads/images/5f040d2a-7a87-43f8-b843-482dfc594988.jpeg",
+            "/static/uploads/images/053ca0cc-fa64-440a-bd5b-17acfbda8aa7.png",
+            "/static/uploads/images/4220752d-6a89-4d72-87c3-486eb56a8d88.jpeg",
+            "/static/uploads/images/c8d0009c-3b6a-4d8b-a653-b9faf5d9455c.png",
+            "/static/uploads/images/dcf09bdb-cdea-4ce0-8c82-fe85456e0255.jpeg",
+            "/static/uploads/images/24ff9377-8c81-4a35-a1a5-fd3d19e9c8f0.jpeg",
+            "/static/uploads/images/4102d6ac-dfb4-42d1-b9d4-5670e9ee0cd1.png"
+        ],
+        "videos": [
+            "/static/uploads/videos/34829f61-9bc7-4911-be0b-e2936cc4384b.mp4"
+        ],
+        "floorplan": null,
+        "latitude": -34.56272,
+        "longitude": -58.49066
+    }
+]

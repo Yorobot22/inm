@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Agustín González Afonso</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/contacto.css">
+</head>
+
+<body>
+    <header id="header">
+        <nav>
+            <a href="/" class="logo focus">
+                <img src="/static/logo/logo.png" alt="Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-name">Agustín González Afonso</span>
+                    <span class="logo-subtitle">Negocios Inmobiliarios</span>
+                </div>
+            </a>
+            <button class="mobile-menu-toggle" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links-container" id="navLinks">
+                <div class="search-wrapper header-search">
+                    <div class="search-container">
+                        <div class="search-fields">
+                            <div class="field-group">
+                                <label>Operación</label>
+
+                                <select id="operationSelector" onchange="setOperation(this.value)">
+                                    <option value="Venta" selected>Venta</option>
+                                    <option value="Alquiler">Alquiler</option>
+                                </select>
+                            </div>
+                            <div class="field-group">
+                                <label>Ubicación</label>
+                                <input type="text" id="locationSearch" placeholder="¿Donde buscar?">
+                            </div>
+                            <div class="field-group">
+                                <label>Tipo</label>
+                                <select id="propertyType">
+                                    <option value="">Tipo de Propiedad</option>
+                                    <option value="Departamento">Departamento</option>
+                                    <option value="Casa">Casa</option>
+                                    <option value="Oficina">Oficina</option>
+                                    <option value="Local">Local</option>
+                                </select>
+                            </div>
+                            <div class="field-group">
+                                <label>Ambientes</label>
+                                <select id="rooms">
+                                    <option value="">Ambientes</option>
+                                    <option value="1">1 Amb</option>
+                                    <option value="2">2 Amb</option>
+                                    <option value="3">3 Amb</option>
+                                    <option value="4">+4 Amb</option>
+                                </select>
+                            </div>
+                            <button class="search-btn" onclick="searchProperties()">
+                                <i class="fas fa-search"></i> <span>Buscar</span>
+                            </button>
+                        </div>
+                        <div class="header-quick-links">
+                            <h2><a href="/"> Inicio </a></h2>
+                            <h2><a href="/venta.html"> Venta </a></h2>
+                            <h2><a href="/alquiler.html"> Alquiler </a></h2>
+                            <h2><a href="/tasaciones.html"> Tasaciones </a></h2>
+                            <h2><a href="/servicios.html"> Servicios </a></h2>
+                            <h2><a href="/contacto.html"> Contacto </a></h2>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </nav>
+    </header>
+
+    <section class="contacto-hero">
+        <h1 style="font-size: 3.5rem; font-weight: 800;">Contacto</h1>
+        <p style="font-size: 1.2rem; max-width: 600px; opacity: 0.9;">Estamos aquí para ayudarte con tu próximo proyecto
+            inmobiliario.</p>
+    </section>
+
+    <main class="contacto-container">
+        <div class="contacto-grid">
+            <div class="contacto-info-card">
+                <h2>Información de Contacto</h2>
+
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Buenos Aires, Argentina</span>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+541160130901">+54 11 6013 0901</a>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info@agustingonzalezafonso.com.ar">info@agustingonzalezafonso.com.ar</a>
+                </div>
+
+                <a href="https://wa.me/541160130901" class="whatsapp-contact-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Hablar por whatsapp
+                </a>
+            </div>
+
+            <div class="contacto-form-card">
+                <h2>Envíanos un mensaje</h2>
+                <p>Completa el formulario y nos pondremos en contacto contigo a la brevedad.</p>
+
+                <form id="contactoForm" action="https://formspree.io/f/info@agustingonzalezafonso.com.ar" method="POST">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" name="nombre" required placeholder="Su nombre">
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" name="email" required placeholder="correo@ejemplo.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="tel" name="telefono" placeholder="Su número de contacto">
+                    </div>
+                    <div class="form-group">
+                        <label>Mensaje</label>
+                        <textarea name="mensaje" rows="5" required placeholder="¿En qué podemos ayudarte?"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">Enviar Mensaje</button>
+                    <div id="statusMsg" class="status-msg"></div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer id="contacto">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="/" class="logo">
+                    <img src="/static/logo/logo.png" alt="Logo" class="logo-img">
+                    <div class="logo-text">
+                        <span class="logo-name">Agustín González Afonso</span>
+                        <span class="logo-subtitle">Negocios Inmobiliarios</span>
+                    </div>
+                </a>
+                <p>Líderes en el mercado inmobiliario premium, brindando asesoramiento integral y personalizado para que
+                    encuentres el lugar de tus sueños.</p>
+            </div>
+            <div class="footer-col">
+                <ul class="footer-links"></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-map-marker-alt"></i> Buenos Aires, Argentina</li>
+                    <li><i class="fas fa-phone"></i> +54 11 6013 0901</li>
+                    <li><i class="fas fa-envelope"></i> info@agustingonzalezafonso.com.ar</li>
+                </ul>
+                <a href="https://wa.me/+541160130901" class="whatsapp-btn" target="_blank"
+                    aria-label="Chat en WhatsApp">
+                    <i class="fab fa-whatsapp"></i> Hablar por whatsapp
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 Agustín González Afonso Negocios Inmobiliarios. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+
+    <script>
+        document.getElementById('contactoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const msg = document.getElementById('statusMsg');
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            btn.disabled = true;
+            btn.innerText = 'ENVIANDO...';
+            msg.className = 'status-msg';
+            msg.style.display = 'none';
+
+            try {
+                const response = await fetch('https://formspree.io/f/info@agustingonzalezafonso.com.ar', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    msg.innerText = '¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.';
+                    msg.classList.add('success');
+                    e.target.reset();
+                } else {
+                    const result = await response.json();
+                    msg.innerText = 'Error: ' + (result.errors ? result.errors[0].message : 'No se pudo enviar.');
+                    msg.classList.add('error');
+                }
+            } catch (error) {
+                msg.innerText = 'Error de conexión. Verifique su internet.';
+                msg.classList.add('error');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Enviar Mensaje';
+                msg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>

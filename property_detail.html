@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Propiedad - Agustín González Afonso</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        .detail-container {
+            padding: 120px 5% 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .main-img-container {
+            height: 500px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .main-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+            cursor: zoom-in;
+        }
+
+        /* Lightbox Styles */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: zoom-out;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: var(--radius-md);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .lightbox-modal.active .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 35px;
+            font-weight: 300;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        .lightbox-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            z-index: 2010;
+            backdrop-filter: blur(4px);
+        }
+
+        .lightbox-arrow:hover {
+            background: var(--primary);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .lightbox-arrow.prev {
+            left: 40px;
+        }
+
+        .lightbox-arrow.next {
+            right: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .lightbox-arrow {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .lightbox-arrow.prev {
+                left: 10px;
+            }
+
+            .lightbox-arrow.next {
+                right: 10px;
+            }
+        }
+
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+
+        .nav-arrow:hover {
+            background: var(--primary);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-arrow.prev {
+            left: 20px;
+        }
+
+        .nav-arrow.next {
+            right: 20px;
+        }
+
+        .thumbs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 15px;
+            height: 500px;
+        }
+
+        .thumb-img {
+            width: 100%;
+            height: calc(250px - 7.5px);
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .thumb-img:hover {
+            opacity: 0.8;
+            transform: scale(0.98);
+        }
+
+        .property-header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 30px;
+        }
+
+        .property-title-info h1 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .property-location-tag {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .property-price-tag {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 5px 0 10px;
+            display: block;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: var(--radius-lg);
+        }
+
+        .spec-item {
+            text-align: center;
+        }
+
+        .spec-item i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .spec-val {
+            display: block;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+
+        .spec-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .video-section {
+            margin-bottom: 60px;
+        }
+
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+        }
+
+        .floating-contact {
+            position: sticky;
+            top: 100px;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid #f1f5f9;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .description-box {
+            line-height: 1.8;
+            color: #475569;
+            font-size: 1.1rem;
+        }
+
+        /* Media Navigation Buttons */
+        .media-nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .media-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: 2px solid var(--secondary);
+            background: transparent;
+            color: var(--secondary);
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .media-nav-btn:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(10, 25, 47, 0.2);
+        }
+
+        .media-nav-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .media-nav-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .media-nav-btn i {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+
+            .gallery-wrapper,
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .thumbs-grid {
+                height: auto;
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .thumb-img {
+                height: 100px;
+            }
+
+            .media-nav-buttons {
+                justify-content: center;
+            }
+        }
+
+        /* Map Container Styles */
+        #mapContainer {
+            width: 100%;
+            height: 500px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            display: none;
+        }
+
+        #propertyMap {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <nav>
+            <a href="/" class="logo">
+                <img src="/static/logo/Logo.png" alt="Logo" class="logo-img">
+
+                <div class="logo-text">
+                    <span class="logo-name">Agustín González Afonso</span>
+                    <span class="logo-subtitle">NEGOCIOS INMOBILIARIOS</span>
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Volver al Inicio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="detail-container" id="propertyDetail">
+        <div id="loading" style="text-align: center; padding: 100px;">
+            <i class="fas fa-spinner fa-spin fa-3x" style="color: var(--primary);"></i>
+        </div>
+
+        <div id="detailContent" style="display: none;">
+            <div class="gallery-wrapper" id="gallery">
+                <div class="main-img-container" id="mainMediaContainer">
+                    <button class="nav-arrow prev" id="prevBtn" aria-label="Anterior">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <img src="" id="mainImg" class="main-img" alt="Propiedad">
+                    <video id="mainVideo" class="main-img" style="display: none;" controls>
+                        Tu navegador no soporta el elemento de video.
+                    </video>
+                    <div id="mapContainer">
+                        <div id="propertyMap"></div>
+                    </div>
+                    <button class="nav-arrow next" id="nextBtn" aria-label="Siguiente">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="thumbs-grid" id="thumbnails">
+                    <!-- Thumbs here -->
+                </div>
+            </div>
+
+            <!-- Media Navigation Buttons -->
+            <div class="media-nav-buttons">
+                <button class="media-nav-btn active" id="btnFotos" onclick="showPhotos()">
+                    <i class="fas fa-camera"></i> Fotos
+                </button>
+                <button class="media-nav-btn disabled" id="btnVideo" onclick="showVideo()">
+                    <i class="fas fa-video"></i> Video
+                </button>
+                <button class="media-nav-btn disabled" id="btnPlano">
+                    <i class="fas fa-drafting-compass"></i> Plano
+                </button>
+                <button class="media-nav-btn disabled" id="btnMapa">
+                    <i class="fas fa-map-marked-alt"></i> Mapa
+                </button>
+            </div>
+
+            <div class="property-header">
+                <div class="property-title-info">
+                    <h1 id="title">Cargando...</h1>
+                    <div class="property-price-tag" id="price">$0</div>
+                    <div class="property-location-tag">
+                        <i class="fas fa-map-marker-alt"></i> <span id="location">Ubicación</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="left-col">
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <i class="fas fa-expand"></i>
+                            <span class="spec-val" id="surface">0 m²</span>
+                            <span class="spec-label">Superficie</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-bed"></i>
+                            <span class="spec-val" id="bedrooms">0</span>
+                            <span class="spec-label">Ambientes</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-bath"></i>
+                            <span class="spec-val" id="bathrooms">0</span>
+                            <span class="spec-label">Baños</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-home"></i>
+                            <span class="spec-val" id="type">Tipo</span>
+                            <span class="spec-label">Propiedad</span>
+                        </div>
+                    </div>
+
+                    <div class="description-box">
+                        <h3>Descripción</h3>
+                        <p id="description">
+                            Esta propiedad destaca por su ubicación estratégica y excelentes terminaciones.
+                            Ideal por su luminosidad y distribución. Consultar por más detalles.
+                        </p>
+                    </div>
+
+                    <div class="video-section" id="videoSection" style="display: none;">
+                        <h3>VIDEO</h3>
+                        <div class="video-container">
+                            <video controls id="propertyVideo">
+                                Tu navegador no soporta el elemento de video.
+                            </video>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-col">
+                    <div class="floating-contact">
+                        <h4 style="margin-bottom: 1.5rem; font-size: 1.2rem;">¿Te interesa esta propiedad?</h4>
+                        <p style="margin-bottom: 2rem; color: var(--text-muted); font-size: 0.9rem;">Dejanos tu consulta
+                            y un asesor se pondrá en contacto a la brevedad.</p>
+                        <a href="https://wa.me/541160130901" class="submit-btn"
+                            style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                            <i class="fab fa-whatsapp"></i> CONSULTAR POR WHATSAPP
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox-modal">
+        <span class="lightbox-close" id="closeLightbox">&times;</span>
+        <button class="lightbox-arrow prev" id="lightboxPrev">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <img class="lightbox-content" id="lightboxImg">
+        <button class="lightbox-arrow next" id="lightboxNext">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <footer id="contacto">
+        <!-- Reusing footer content would be better via JS or include if using a template engine, 
+             but for now I'll just put a simple version or copy from index -->
+        <div class="footer-bottom">
+            &copy; 2025 Agustin Gonzalez Afonso Negocios Inmobiliarios. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <script src="/static/js/detail.js"></script>
+    <script>
+        // Store media URLs globally
+        let propertyVideoUrl = null;
+        let propertyFloorplanUrl = null;
+
+        // Show photos view
+        function showPhotos() {
+            const mainImg = document.getElementById('mainImg');
+            const mainVideo = document.getElementById('mainVideo');
+            const thumbsGrid = document.getElementById('thumbnails');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            // Show photo elements
+            mainImg.style.display = 'block';
+            thumbsGrid.style.display = 'grid';
+            prevBtn.style.display = 'flex';
+            nextBtn.style.display = 'flex';
+
+            // Hide video
+            mainVideo.style.display = 'none';
+            mainVideo.pause();
+
+            // Restore current photo (in case we were viewing floor plan)
+            if (typeof window.restoreCurrentPhoto === 'function') {
+                window.restoreCurrentPhoto();
+            }
+
+            // Update button states
+            updateActiveButton('btnFotos');
+        }
+
+        // Show video view
+        function showVideo() {
+            if (!propertyVideoUrl) return;
+
+            const mainImg = document.getElementById('mainImg');
+            const mainVideo = document.getElementById('mainVideo');
+            const thumbsGrid = document.getElementById('thumbnails');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            // Hide photo elements
+            mainImg.style.display = 'none';
+            thumbsGrid.style.display = 'none';
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+
+            // Show and play video
+            mainVideo.src = propertyVideoUrl;
+            mainVideo.style.display = 'block';
+
+            // Update button states
+            updateActiveButton('btnVideo');
+
+            // Scroll to gallery
+            document.getElementById('gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Show floor plan view
+        function showFloorplan() {
+            if (!propertyFloorplanUrl) return;
+
+            const mainImg = document.getElementById('mainImg');
+            const mainVideo = document.getElementById('mainVideo');
+            const thumbsGrid = document.getElementById('thumbnails');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            // Hide video and navigation
+            mainVideo.style.display = 'none';
+            mainVideo.pause();
+            thumbsGrid.style.display = 'none';
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+
+            // Show floor plan image
+            mainImg.src = propertyFloorplanUrl;
+            mainImg.style.display = 'block';
+
+            // Update button states
+            updateActiveButton('btnPlano');
+
+            // Scroll to gallery
+            document.getElementById('gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Update active button state
+        function updateActiveButton(activeId) {
+            document.querySelectorAll('.media-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(activeId).classList.add('active');
+        }
+
+        // Check for video and enable button - called from detail.js after data loads
+        window.enableVideoButton = function (videoUrl) {
+            if (videoUrl) {
+                propertyVideoUrl = videoUrl;
+                const btnVideo = document.getElementById('btnVideo');
+                btnVideo.classList.remove('disabled');
+            }
+        };
+
+        // Check for floor plan and enable button - called from detail.js after data loads
+        window.enableFloorplanButton = function (floorplanUrl) {
+            if (floorplanUrl) {
+                propertyFloorplanUrl = floorplanUrl;
+                const btnPlano = document.getElementById('btnPlano');
+                btnPlano.classList.remove('disabled');
+                btnPlano.onclick = showFloorplan;
+            }
+        };
+
+        // Map variables
+        let propertyLatitude = null;
+        let propertyLongitude = null;
+        let propertyMap = null;
+
+        // Show map view
+        function showMap() {
+            if (!propertyLatitude || !propertyLongitude) return;
+
+            const mainImg = document.getElementById('mainImg');
+            const mainVideo = document.getElementById('mainVideo');
+            const thumbsGrid = document.getElementById('thumbnails');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const mapContainer = document.getElementById('mapContainer');
+
+            // Hide photo/video elements
+            mainImg.style.display = 'none';
+            mainVideo.style.display = 'none';
+            mainVideo.pause();
+            thumbsGrid.style.display = 'none';
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+
+            // Show map
+            mapContainer.style.display = 'block';
+
+            // Initialize map if not already done
+            if (!propertyMap) {
+                propertyMap = L.map('propertyMap').setView([propertyLatitude, propertyLongitude], 16);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(propertyMap);
+                L.marker([propertyLatitude, propertyLongitude]).addTo(propertyMap);
+            } else {
+                // Invalidate size to fix rendering issues when map was hidden
+                setTimeout(() => propertyMap.invalidateSize(), 100);
+            }
+
+            // Update button states
+            updateActiveButton('btnMapa');
+
+            // Scroll to gallery
+            document.getElementById('gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Check for coordinates and enable map button - called from detail.js after data loads
+        window.enableMapButton = function (lat, lng) {
+            if (lat !== null && lng !== null && lat !== undefined && lng !== undefined) {
+                propertyLatitude = lat;
+                propertyLongitude = lng;
+                const btnMapa = document.getElementById('btnMapa');
+                btnMapa.classList.remove('disabled');
+                btnMapa.onclick = showMap;
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</body>
+
+</html>

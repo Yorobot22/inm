@@ -7,11 +7,11 @@ __pycache__ /
 *. ipynb_checkpoints/
 
 # Virtual environment
-venv/
+env/
 env/
 . venv/
 . env/
-
+.env/
 # Distributions and packaging
 . egg/
 . eggs/

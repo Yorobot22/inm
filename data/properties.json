@@ -23,7 +23,7 @@
         "videos": [
             "/static/uploads/videos/e506b533-bb15-4a36-8c04-bd0ec99858d4.mp4"
         ],
-        "floorplan": "/static/uploads/images/727f706d-ae59-47c2-9bd2-7598141d75d4.jpg",
+        "floorplan": "/static/uploads/images/79e9fe13-d2af-484a-a55c-c74434532501.jpeg",
         "latitude": -34.63609,
         "longitude": -58.40379
     },
@@ -53,7 +53,7 @@
         "videos": [
             "/static/uploads/videos/34829f61-9bc7-4911-be0b-e2936cc4384b.mp4"
         ],
-        "floorplan": null,
+        "floorplan": "/static/uploads/images/1e4a982d-6046-4505-8cb8-e85c440854ab.jpeg",
         "latitude": -34.56272,
         "longitude": -58.49066
     }

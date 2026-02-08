@@ -403,11 +403,64 @@
                     <span class="logo-subtitle">NEGOCIOS INMOBILIARIOS</span>
                 </div>
             </a>
-            <ul class="nav-links">
-                <li><a href="/">Inicio</a></li>
-            </ul>
+            <button class="mobile-menu-toggle" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links-container" id="navLinks">
+                <div class="search-wrapper header-search">
+                    <div class="search-container">
+                        <div class="search-fields">
+                            <div class="field-group">
+                                <label>Operación</label>
+
+                                <select id="operationSelector" onchange="setOperation(this.value)">
+                                    <option value="Venta">Venta</option>
+                                    <option value="Alquiler" selected>Alquiler</option>
+                                </select>
+                            </div>
+                            <div class="field-group">
+                                <label>Ubicación</label>
+                                <input type="text" id="locationSearch" placeholder="¿Donde buscar?">
+                            </div>
+                            <div class="field-group">
+                                <label>Tipo</label>
+                                <select id="propertyType">
+                                    <option value="">Tipo de Propiedad</option>
+                                    <option value="Departamento">Departamento</option>
+                                    <option value="Casa">Casa</option>
+                                    <option value="Oficina">Oficina</option>
+                                    <option value="Local">Local</option>
+                                </select>
+                            </div>
+                            <div class="field-group">
+                                <label>Ambientes</label>
+                                <select id="rooms">
+                                    <option value="">Ambientes</option>
+                                    <option value="1">1 Amb</option>
+                                    <option value="2">2 Amb</option>
+                                    <option value="3">3 Amb</option>
+                                    <option value="4">+4 Amb</option>
+                                </select>
+                            </div>
+                            <button class="search-btn" onclick="searchProperties()">
+                                <i class="fas fa-search"></i> <span>Buscar</span>
+                            </button>
+                        </div>
+                        <div class="header-quick-links">
+                            <h2><a href="/"> Volver al inicio </a></h2>
+                            <h2><a href="/venta.html"> Venta </a></h2>
+                            <h2><a href="/alquiler.html"> Alquiler </a></h2>
+                            <h2><a href="/tasaciones.html"> Tasaciones </a></h2>
+                            <h2><a href="/servicios.html"> Servicios </a></h2>
+                            <h2><a href="/contacto.html"> Contacto </a></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </nav>
     </header>
+
+
 
     <main class="detail-container" id="propertyDetail">
         <div id="loading" style="text-align: center; padding: 100px;">

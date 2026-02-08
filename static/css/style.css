@@ -833,6 +833,10 @@ footer {
 }
 
 @media (max-width: 768px) {
+    nav {
+        gap: 15px;
+    }
+
     .mobile-menu-toggle {
         display: block;
         z-index: 1002;

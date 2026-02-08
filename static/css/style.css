@@ -922,7 +922,7 @@ footer {
     }
 
     .header-quick-links h2 a:hover {
-        color: var(--primary-);
+        color: var(--primary);
         text-decoration: none;
         padding-left: 10px;
     }

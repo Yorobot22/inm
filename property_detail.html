@@ -37,6 +37,11 @@
             cursor: zoom-in;
         }
 
+        #mainVideo {
+            object-fit: contain;
+            background: #000;
+        }
+
         /* Lightbox Styles */
         .lightbox-modal {
             display: none;
@@ -356,6 +361,11 @@
             .gallery-wrapper,
             .content-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .main-img-container {
+                height: auto;
+                aspect-ratio: 4/3;
             }
 
             .thumbs-grid {

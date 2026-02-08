@@ -130,17 +130,10 @@
         </div>
     </footer>
 
-    <script src="/static/js/app.js"></script>
+    <script src="/static/js/app.js?v=1.4"></script>
     <script>
-        // Override initial load to show Venta by default
-        document.addEventListener('DOMContentLoaded', () => {
-            currentOperation = 'Venta';
-            const opSelector = document.getElementById('operationSelector');
-            if (opSelector) opSelector.value = 'Venta';
-            setTimeout(() => {
-                searchProperties();
-            }, 100);
-        });
+        // Set initial operation for app.js
+        window.initialOperation = 'Venta';
     </script>
 </body>
 

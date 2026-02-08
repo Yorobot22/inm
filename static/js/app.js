@@ -14,31 +14,46 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Mobile Menu Toggle
-    const mobileMenu = document.getElementById('mobileMenu');
-    const navLinks = document.getElementById('navLinks');
-    if (mobileMenu && navLinks) {
-        mobileMenu.addEventListener('click', () => {
+    // Mobile Menu Toggle (using delegation for robustness)
+    document.addEventListener('click', (e) => {
+        const mobileMenu = e.target.closest('#mobileMenu');
+        const navLinks = document.getElementById('navLinks');
+
+        if (mobileMenu && navLinks) {
+            console.log('Mobile menu clicked (delegated)');
             navLinks.classList.toggle('active');
+
+            const isOpen = navLinks.classList.contains('active');
             const icon = mobileMenu.querySelector('i');
             if (icon) {
-                icon.classList.toggle('fa-bars');
-                icon.classList.toggle('fa-times');
+                if (isOpen) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
             }
-        });
+            return;
+        }
 
-        // Close menu on link click
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
+        // Close menu on link click or outside click (using delegation)
+        if (navLinks && navLinks.classList.contains('active')) {
+            const link = e.target.closest('#navLinks a');
+            const isOutside = !navLinks.contains(e.target) && (!mobileMenu || !mobileMenu.contains(e.target));
+
+            if (link || isOutside) {
+                console.log(link ? 'Nav link clicked, closing menu (delegated)' : 'Outside click, closing menu (delegated)');
                 navLinks.classList.remove('active');
-                const icon = mobileMenu.querySelector('i');
+                const menuBtn = document.getElementById('mobileMenu');
+                const icon = menuBtn ? menuBtn.querySelector('i') : null;
                 if (icon) {
                     icon.classList.add('fa-bars');
                     icon.classList.remove('fa-times');
                 }
-            });
-        });
-    }
+            }
+        }
+    });
 
     // Intersection Observer for Reveal
     const observer = new IntersectionObserver((entries) => {
@@ -51,44 +66,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Initial load - fetch all to show featured
-    searchProperties(true);
-
     // Search Capsule State Management
     const searchFields = document.querySelector('.header-search .search-fields');
-    const inputs = searchFields.querySelectorAll('input, select');
+    if (searchFields) {
+        const inputs = searchFields.querySelectorAll('input, select');
 
-    const updateSearchCapsuleState = () => {
-        let hasSelection = false;
-        inputs.forEach(input => {
-            if (input.id === 'operationSelector') {
-                // Operation always has a value, but check if it's default or not
-                // (Optional: you can decide if "Venta" counts as selection)
-                if (input.value !== 'Venta') hasSelection = true;
-            } else if (input.value && input.value !== '') {
-                hasSelection = true;
+        const updateSearchCapsuleState = () => {
+            let hasSelection = false;
+            inputs.forEach(input => {
+                if (input.id === 'operationSelector') {
+                    if (input.value !== 'Venta') hasSelection = true;
+                } else if (input.value && input.value !== '') {
+                    hasSelection = true;
+                }
+            });
+
+            if (hasSelection) {
+                searchFields.classList.add('has-selection');
+            } else {
+                searchFields.classList.remove('has-selection');
             }
+        };
+
+        inputs.forEach(input => {
+            input.addEventListener('change', updateSearchCapsuleState);
+            input.addEventListener('input', updateSearchCapsuleState);
         });
 
-        if (hasSelection) {
-            searchFields.classList.add('has-selection');
-        } else {
-            searchFields.classList.remove('has-selection');
-        }
-    };
+        // Initial check
+        updateSearchCapsuleState();
+    }
 
-    inputs.forEach(input => {
-        input.addEventListener('change', updateSearchCapsuleState);
-        input.addEventListener('input', updateSearchCapsuleState);
-    });
-
-    // Initial check
-    updateSearchCapsuleState();
-
-    // Check for URL parameters on load
+    // Check for URL parameters or global initialOperation
     const params = new URLSearchParams(window.location.search);
-    if (params.has('operation')) {
-        currentOperation = params.get('operation');
+    if (params.has('operation') || window.initialOperation) {
+        if (params.has('operation')) {
+            currentOperation = params.get('operation');
+        } else if (window.initialOperation) {
+            currentOperation = window.initialOperation;
+        }
+
         const opSelector = document.getElementById('operationSelector');
         if (opSelector) opSelector.value = currentOperation;
 
@@ -101,7 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const locationInput = document.getElementById('locationSearch');
         if (locationInput && params.has('location')) locationInput.value = params.get('location');
 
-        searchProperties();
+        searchProperties(true);
+        console.log('Initial search triggered with isInitial=true');
     } else {
         // Initial load - fetch all to show featured
         searchProperties(true);
@@ -140,7 +158,12 @@ async function searchProperties(isInitial = false) {
     }
 
     let url = `/api/properties?`;
-    if (!isInitial) {
+    // Include operation filter if: 
+    // 1. It's not the initial load (user triggered search)
+    // 2. We have an explicit initial operation (Venta/Alquiler pages)
+    // 3. We have an operation in the URL parameters
+    const params = new URLSearchParams(window.location.search);
+    if (!isInitial || window.initialOperation || params.has('operation')) {
         url += `operation=${currentOperation}`;
     }
 
@@ -154,15 +177,17 @@ async function searchProperties(isInitial = false) {
         const properties = await response.json();
         renderProperties(properties);
 
-        // Close mobile menu if active
-        const navLinks = document.getElementById('navLinks');
-        const mobileMenu = document.getElementById('mobileMenu');
-        if (navLinks && navLinks.classList.contains('active')) {
-            navLinks.classList.remove('active');
-            const icon = mobileMenu.querySelector('i');
-            if (icon) {
-                icon.classList.add('fa-bars');
-                icon.classList.remove('fa-times');
+        // Close mobile menu if active (don't close on initial load as it shouldn't be open)
+        if (!isInitial) {
+            const navLinks = document.getElementById('navLinks');
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (navLinks && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                const icon = mobileMenu.querySelector('i');
+                if (icon) {
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-times');
+                }
             }
         }
     } catch (error) {

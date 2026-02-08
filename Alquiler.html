@@ -130,17 +130,10 @@
         </div>
     </footer>
 
-    <script src="/static/js/app.js"></script>
+    <script src="/static/js/app.js?v=1.4"></script>
     <script>
-        // Override initial load to show Alquiler by default
-        document.addEventListener('DOMContentLoaded', () => {
-            currentOperation = 'Alquiler';
-            const opSelector = document.getElementById('operationSelector');
-            if (opSelector) opSelector.value = 'Alquiler';
-            setTimeout(() => {
-                searchProperties();
-            }, 100);
-        });
+        // Set initial operation for app.js
+        window.initialOperation = 'Alquiler';
     </script>
 </body>
 

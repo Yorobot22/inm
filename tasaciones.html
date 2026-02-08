@@ -318,7 +318,7 @@
             msg.style.display = 'none';
 
             try {
-                const response = await fetch('https://formspree.io/f/sergio@gonzalezafonso.com.ar', {
+                const response = await fetch('/api/tasaciones', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -328,12 +328,20 @@
                 });
 
                 if (response.ok) {
-                    msg.innerText = '¡Solicitud enviada con éxito! Revisa tu correo sergio@gonzalezafonso.com.ar para confirmar la activación (solo la primera vez).';
+                    msg.innerText = '¡Solicitud enviada con éxito! Nos pondremos en contacto pronto.';
                     msg.classList.add('success');
                     e.target.reset();
                 } else {
                     const result = await response.json();
-                    msg.innerText = 'Error: ' + (result.errors ? result.errors[0].message : 'No se pudo enviar.');
+                    let errorMsg = 'No se pudo enviar.';
+                    if (result.detail) {
+                        if (Array.isArray(result.detail)) {
+                            errorMsg = result.detail.map(d => `${d.loc[d.loc.length - 1]}: ${d.msg}`).join(', ');
+                        } else {
+                            errorMsg = result.detail;
+                        }
+                    }
+                    msg.innerText = 'Error: ' + errorMsg;
                     msg.classList.add('error');
                 }
             } catch (error) {

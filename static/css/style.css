@@ -8,7 +8,7 @@
     --primary: #ccbe94;
     /* Elegant Red */
     --primary-dark: #9ca3af;
-    --secondary: #0a192f;
+    --secondary: #375278;
     /* Deep Navy */
     --accent: #64ffda;
     --background: #f3f4f6;
@@ -837,6 +837,16 @@ footer {
         display: block;
         z-index: 1002;
         position: relative;
+    }
+
+    .logo-name {
+        font-size: 1.25rem;
+        white-space: nowrap;
+    }
+
+    .logo-subtitle {
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
     }
 
     .nav-links-container {

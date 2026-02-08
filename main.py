@@ -16,11 +16,13 @@ app = FastAPI()
 
 # Configuration
 DATA_FILE = "data/properties.json"
+CLIENTS_FILE = "data/clients.json"
 UPLOAD_DIR = "static/uploads"
 IMAGES_DIR = os.path.join(UPLOAD_DIR, "images")
 VIDEOS_DIR = os.path.join(UPLOAD_DIR, "videos")
 
 # Ensure directories exist
+os.makedirs("data", exist_ok=True)
 os.makedirs(IMAGES_DIR, exist_ok=True)
 os.makedirs(VIDEOS_DIR, exist_ok=True)
 
@@ -74,6 +76,19 @@ def save_properties(properties):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(properties, f, indent=4, ensure_ascii=False)
 
+def load_clients():
+    if not os.path.exists(CLIENTS_FILE):
+        return []
+    try:
+        with open(CLIENTS_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return []
+
+def save_clients(clients):
+    with open(CLIENTS_FILE, "w", encoding="utf-8") as f:
+        json.dump(clients, f, indent=4, ensure_ascii=False)
+
 @app.get("/")
 async def read_index():
     return FileResponse("index.html")
@@ -81,6 +96,10 @@ async def read_index():
 @app.get("/admin")
 async def read_admin(username: str = Depends(authenticate_admin)):
     return FileResponse("admin.html")
+
+@app.get("/clientes")
+async def read_clientes(username: str = Depends(authenticate_admin)):
+    return FileResponse("clientes.html")
 
 @app.get("/propiedad/{id}")
 async def read_property_detail(id: int):
@@ -421,15 +440,59 @@ class TasacionRequest(BaseModel):
     nombre: str
     apellido: str
     email: str
-    telefono: str
+    telefono: Optional[str] = None
     comentario: str
+
+class ContactRequest(BaseModel):
+    nombre: str
+    email: str
+    telefono: Optional[str] = None
+    mensaje: str
 
 @app.post("/api/tasaciones")
 async def create_tasacion(request: TasacionRequest):
-    # Log the data for now
-    print(f"Nueva solicitud de tasación: {request}")
-    # Here you would implement the email sending logic
+    print(f"Recibida tasación: {request}")
+    clients = load_clients()
+    new_id = str(uuid.uuid4())[:8]
+    from datetime import datetime
+    
+    new_client = {
+        "id": new_id,
+        "type": "Tasación",
+        "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "data": request.dict()
+    }
+    clients.append(new_client)
+    save_clients(clients)
     return {"message": "Solicitud recibida correctamente"}
+
+@app.post("/api/contacto")
+async def create_contacto(request: ContactRequest):
+    print(f"Recibido contacto: {request}")
+    clients = load_clients()
+    new_id = str(uuid.uuid4())[:8]
+    from datetime import datetime
+    
+    new_client = {
+        "id": new_id,
+        "type": "Contacto",
+        "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "data": request.dict()
+    }
+    clients.append(new_client)
+    save_clients(clients)
+    return {"message": "Mensaje enviado con éxito"}
+
+@app.get("/api/clients")
+async def get_clients(username: str = Depends(authenticate_admin)):
+    return load_clients()
+
+@app.delete("/api/clients/{id}")
+async def delete_client(id: str, username: str = Depends(authenticate_admin)):
+    clients = load_clients()
+    clients = [c for c in clients if c["id"] != id]
+    save_clients(clients)
+    return {"message": "Cliente eliminado"}
 
 if __name__ == "__main__":
     import uvicorn

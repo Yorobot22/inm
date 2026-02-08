@@ -1,0 +1,37 @@
+[
+    {
+        "id": "32971cf9",
+        "type": "Tasación",
+        "date": "2026-02-07 18:20:26",
+        "data": {
+            "nombre": "Sergio Manuel",
+            "apellido": "Sergio",
+            "email": "sergio@gonzalezafonso.com.ar",
+            "telefono": "1140764994",
+            "comentario": "Tasaciones prueba 1"
+        }
+    },
+    {
+        "id": "960a822e",
+        "type": "Tasación",
+        "date": "2026-02-07 18:26:56",
+        "data": {
+            "nombre": "Sergio Manuel",
+            "apellido": "Sergio",
+            "email": "sergio@gonzalezafonso.com.ar",
+            "telefono": "1140764994",
+            "comentario": "tasaciones 2 "
+        }
+    },
+    {
+        "id": "e0f58903",
+        "type": "Contacto",
+        "date": "2026-02-07 18:27:39",
+        "data": {
+            "nombre": "Yo1",
+            "email": "sergio@gmail.com",
+            "telefono": "1140764994",
+            "mensaje": "Contacto 2 "
+        }
+    }
+]

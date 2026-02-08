@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas de Clientes - Agustín González Afonso</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-container {
+            padding: 120px 5% 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f8fafc;
+            color: var(--secondary);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        tr:hover {
+            background: #f1f5f9;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-contacto {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-tasacion {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #991b1b;
+            border: none;
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .delete-btn:hover {
+            background: #fecaca;
+            transform: scale(1.05);
+        }
+
+        .data-details {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            max-width: 400px;
+        }
+
+        .data-details strong {
+            color: var(--secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <nav>
+            <a href="/" class="logo">
+                <img src="/static/logo/logo.png" alt="Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-name">Agustín González Afonso</span>
+                    <span class="logo-subtitle">NEGOCIOS INMOBILIARIOS</span>
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/admin">Propiedades</a></li>
+                <li><a href="/">Volver al Sitio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <div class="admin-card">
+            <h2 class="section-title" style="margin-top:0; margin-bottom: 2rem;">Consultas de Clientes</h2>
+            <div id="clientsList">
+                <p style="text-align: center; color: var(--text-light);">Cargando consultas...</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        async function fetchClients() {
+            try {
+                const response = await fetch('/api/clients');
+                if (!response.ok) throw new Error('Error al cargar clientes');
+                const clients = await response.json();
+                renderClients(clients);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('clientsList').innerHTML = '<p style="color: red; text-align: center;">Error al cargar datos.</p>';
+            }
+        }
+
+        function renderClients(clients) {
+            const list = document.getElementById('clientsList');
+            if (clients.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 2rem;">No hay consultas registradas aún.</p>';
+                return;
+            }
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>Cliente</th>
+                            <th>Contacto</th>
+                            <th>Detalles</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            clients.reverse().forEach(client => {
+                const d = client.data;
+                const name = client.type === 'Tasación' ? `${d.nombre} ${d.apellido}` : d.nombre;
+                const details = client.type === 'Tasación' ? d.comentario : d.mensaje;
+
+                html += `
+                    <tr>
+                        <td style="white-space: nowrap;">${client.date}</td>
+                        <td><span class="badge badge-${client.type.toLowerCase()}">${client.type}</span></td>
+                        <td style="font-weight: 600;">${name}</td>
+                        <td>
+                            <div><i class="fas fa-envelope" style="color: var(--primary); font-size: 0.8rem;"></i> ${d.email}</div>
+                            <div><i class="fas fa-phone" style="color: var(--primary); font-size: 0.8rem;"></i> ${d.telefono}</div>
+                        </td>
+                        <td class="data-details">${details}</td>
+                        <td>
+                            <button onclick="deleteClient('${client.id}')" class="delete-btn" title="Eliminar consulta">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            list.innerHTML = html;
+        }
+
+        async function deleteClient(id) {
+            if (!confirm('¿Estás seguro de que deseas eliminar esta consulta?')) return;
+
+            try {
+                const response = await fetch(`/api/clients/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    fetchClients();
+                } else {
+                    alert('Error al eliminar');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error de conexión');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchClients);
+    </script>
+</body>
+
+</html>

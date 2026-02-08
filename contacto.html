@@ -302,7 +302,7 @@
                 <h2>Envíanos un mensaje</h2>
                 <p>Completa el formulario y nos pondremos en contacto contigo a la brevedad.</p>
 
-                <form id="contactoForm" action="https://formspree.io/f/info@agustingonzalezafonso.com.ar" method="POST">
+                <form id="contactoForm">
                     <div class="form-group">
                         <label>Nombre</label>
                         <input type="text" name="nombre" required placeholder="Su nombre">
@@ -376,7 +376,7 @@
             msg.style.display = 'none';
 
             try {
-                const response = await fetch('https://formspree.io/f/info@agustingonzalezafonso.com.ar', {
+                const response = await fetch('/api/contacto', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -391,7 +391,15 @@
                     e.target.reset();
                 } else {
                     const result = await response.json();
-                    msg.innerText = 'Error: ' + (result.errors ? result.errors[0].message : 'No se pudo enviar.');
+                    let errorMsg = 'No se pudo enviar.';
+                    if (result.detail) {
+                        if (Array.isArray(result.detail)) {
+                            errorMsg = result.detail.map(d => `${d.loc[d.loc.length - 1]}: ${d.msg}`).join(', ');
+                        } else {
+                            errorMsg = result.detail;
+                        }
+                    }
+                    msg.innerText = 'Error: ' + errorMsg;
                     msg.classList.add('error');
                 }
             } catch (error) {

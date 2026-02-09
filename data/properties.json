@@ -56,5 +56,31 @@
         "floorplan": "/static/uploads/images/1e4a982d-6046-4505-8cb8-e85c440854ab.jpeg",
         "latitude": -34.56272,
         "longitude": -58.49066
+    },
+    {
+        "id": 3,
+        "title": "Ciudad de La Paz 3298",
+        "location": "Nuñez",
+        "price": "USD 119.000",
+        "type": "Departamento",
+        "operation": "Venta",
+        "surface": 45,
+        "bedrooms": 1,
+        "bathrooms": 1,
+        "featured": true,
+        "description": "Oportunidad Estratégica: Unidad de Alta Demanda en Núñez\r\n\r\nPresentamos una propiedad con potencial de renta maximizado gracias a su ubicación premium en una de las zonas de mayor crecimiento de CABA. Situado en un edificio en excelente estado, este departamento de 2 ambientes al frente es un activo seguro para alquileres tradicionales o temporarios.\r\n\r\nFactores clave de inversión:\r\n\r\n* Ubicación táctica: A metros del Metrobus, Subte D y rodeado de universidades de prestigio y empresas de primera línea.\r\n* Proximidad estratégica: Vecino al Parque de la Innovación, el nuevo hub de desarrollo urbano de la ciudad.\r\n* Tipología buscada: 3er piso al frente con balcón corrido, cocina independiente y lavadero.\r\n\r\nUna pieza inmobiliaria versátil, ideal para captar el público de estudiantes y jóvenes corporativos que hoy traccionan el mercado de Núñez.",
+        "images": [
+            "/static/uploads/images/aa23c874-073d-4c14-af76-42813ae2c3b2.jpeg",
+            "/static/uploads/images/115c7d37-7f0e-4656-b251-ee6a9f64faaa.jpeg",
+            "/static/uploads/images/b75fff26-60aa-42b3-ae4c-fa703e27b672.jpeg",
+            "/static/uploads/images/46282f4a-857e-477a-8c11-ce930b5a643f.jpeg",
+            "/static/uploads/images/6ac84e8d-b6eb-41f5-965a-774296dfc034.jpeg"
+        ],
+        "videos": [
+            "/static/uploads/videos/e2eaa970-bdad-49e1-acef-75882c5d51fb.mp4"
+        ],
+        "floorplan": null,
+        "latitude": -34.55237,
+        "longitude": -58.46727
     }
 ]

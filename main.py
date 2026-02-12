@@ -312,6 +312,9 @@ async def update_property(
     if prop_index == -1:
         raise HTTPException(status_code=404, detail="Propiedad no encontrada")
         
+    print(f"ACTUALIZANDO PROPIEDAD ID: {id}")
+    print(f"RECIBIDO: reserved={reserved}, video_url={video_url}")
+    
     current_prop = properties[prop_index]
     
     # Update Images (only if new ones are uploaded)

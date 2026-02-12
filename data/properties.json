@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "title": "Deán Funes 2148",
+        "title": "Deán Funes 2148 TEST",
         "location": "Parque Patricios CABA",
         "price": "$1.600.000",
         "type": "Oficina",
@@ -10,7 +10,7 @@
         "bedrooms": 5,
         "bathrooms": 2,
         "featured": true,
-        "description": "Oficina comercial en alquiler ubicada en Parque Patricios, ideal para uso comercial. Cuenta con 111 m2 de superficie construida y 213 m2 de superficie total, distribuida en 2 plantas. Dispone de 4 ambientes y 2 baños, apta para uso profesional y con excelente luminosidad.\r\nLa oficina es ideal para oficinas y tiene una antigüedad de 40 años. La zona de Parque Patricios ofrece fácil acceso a transporte público, incluyendo diversas líneas de autobuses y cercanía a la estación de subte. En los alrededores, se encuentran comercios, bancos y servicios esenciales. Además, la zona cuenta con una creciente oferta gastronómica y espacios verdes para disfrutar. Es una zona mixta, con un ambiente dinámico y en constante desarrollo.\r\n- A ½ cuadra de Avenida Caseros y a 200mtrs de la estación Parque Patricios del subte H\r\n- En el corazón del Distrito Tecnológico y área comercial de Parque Patricios\r\n- Sin expensas, gas instalado (no está actualmente en uso) e instalación eléctrica.\r\n- Sólo uso profesional / comercial\r\n",
+        "description": "Test description",
         "images": [
             "/static/uploads/images/eb520a56-564e-41bb-88b4-3df353febf2c.jpeg",
             "/static/uploads/images/d557364c-f6c3-4e8b-be86-9033572f1beb.jpeg",
@@ -20,7 +20,7 @@
             "/static/uploads/images/d4f03093-8ec9-4f16-814c-96a754bc461a.jpeg",
             "/static/uploads/images/fafabfe4-7c04-43d1-8007-b5a7fae3c75a.jpeg"
         ],
-        "video_url": "https://youtu.be/T2NSRPyIrpI",
+        "video_url": "https://www.youtube.com/watch?v=T2NSRPyIrpI",
         "floorplan": "/static/uploads/images/79e9fe13-d2af-484a-a55c-c74434532501.jpeg",
         "reserved": false,
         "alquilado": false,
@@ -51,9 +51,11 @@
             "/static/uploads/images/24ff9377-8c81-4a35-a1a5-fd3d19e9c8f0.jpeg",
             "/static/uploads/images/4102d6ac-dfb4-42d1-b9d4-5670e9ee0cd1.png"
         ],
-        "video_url": null,
+        "video_url": "https://www.youtube.com/watch?v=AiZ3gA4HQbo",
         "floorplan": "/static/uploads/images/1e4a982d-6046-4505-8cb8-e85c440854ab.jpeg",
         "reserved": true,
+        "alquilado": false,
+        "vendido": false,
         "latitude": -34.56272,
         "longitude": -58.49066
     },

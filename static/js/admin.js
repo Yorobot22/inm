@@ -14,7 +14,7 @@ document.getElementById('propertyForm').addEventListener('submit', async (e) => 
     statusMsg.style.display = 'none';
 
     try {
-        const url = isEditMode ? `/api/properties/${currentEditId}` : '/api/properties';
+        const url = isEditMode ? `/api/properties/${currentEditId}?_t=${Date.now()}` : '/api/properties';
         const method = isEditMode ? 'PUT' : 'POST';
 
         const response = await fetch(url, {
@@ -52,7 +52,7 @@ async function fetchProperties() {
     const listContainer = document.getElementById('propertyList');
 
     try {
-        const response = await fetch('/api/properties');
+        const response = await fetch(`/api/properties?_t=${Date.now()}`);
         const properties = await response.json();
 
         if (properties.length === 0) {
@@ -93,7 +93,7 @@ async function fetchProperties() {
 // Function to enter edit mode
 async function editProperty(id) {
     try {
-        const response = await fetch(`/api/properties/${id}`);
+        const response = await fetch(`/api/properties/${id}?_t=${Date.now()}`);
         if (!response.ok) throw new Error('Error al obtener datos');
 
         const prop = await response.json();

@@ -218,6 +218,7 @@ function renderProperties(properties) {
         card.innerHTML = `
             <div class="property-image-wrapper">
                 <div class="property-image" style="background-image: url('${mainImage}')"></div>
+                ${prop.vendido ? '<div class="reserved-ribbon">VENDIDO</div>' : (prop.alquilado ? '<div class="reserved-ribbon">ALQUILADO</div>' : (prop.reserved ? '<div class="reserved-ribbon">RESERVADO</div>' : ''))}
                 <span class="property-badge">${prop.type} en ${prop.operation}</span>
             </div>
             <div class="property-info">
@@ -225,7 +226,7 @@ function renderProperties(properties) {
                 <div class="property-location" style="font-size: 1rem; margin-bottom: 0.5rem;">${prop.location}</div>
                 <div class="property-details">
                     <div class="detail-item"><i class="fas fa-expand"></i> ${prop.surface} m²</div>
-                    <div class="detail-item"><i class="fas fa-bed"></i> ${prop.bedrooms} Dorm</div>
+                    <div class="detail-item"><i class="fas fa-bed"></i> ${prop.bedrooms} Amb.</div>
                     <div class="detail-item"><i class="fas fa-bath"></i> ${prop.bathrooms} Baños</div>
                 </div>
             </div>

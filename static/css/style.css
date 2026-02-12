@@ -658,6 +658,23 @@ header.scrolled .logo-img {
     letter-spacing: 0.1em;
 }
 
+.reserved-ribbon {
+    position: absolute;
+    top: 30px;
+    right: -40px;
+    background: #ef4444; /* Rojo vibrante */
+    color: white;
+    padding: 8px 50px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    transform: rotate(45deg);
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    letter-spacing: 0.1em;
+    pointer-events: none;
+}
+
 .property-price {
     position: absolute;
     bottom: -25px;

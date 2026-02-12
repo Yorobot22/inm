@@ -198,8 +198,11 @@ async def create_property(
     latitude: Optional[str] = Form(None),
     longitude: Optional[str] = Form(None),
     images: List[UploadFile] = File(...),
-    video: Optional[UploadFile] = File(None),
+    video_url: Optional[str] = Form(None),
     floorplan: Optional[UploadFile] = File(None),
+    reserved: bool = Form(False),
+    alquilado: bool = Form(False),
+    vendido: bool = Form(False),
     username: str = Depends(authenticate_admin)
 ):
     properties = load_properties()
@@ -220,15 +223,8 @@ async def create_property(
                 shutil.copyfileobj(image.file, buffer)
             saved_images.append(f"/static/uploads/images/{filename}")
             
-    # Save Video
-    saved_videos = []
-    if video and video.filename:
-        ext = os.path.splitext(video.filename)[1]
-        filename = f"{uuid.uuid4()}{ext}"
-        file_path = os.path.join(VIDEOS_DIR, filename)
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(video.file, buffer)
-        saved_videos.append(f"/static/uploads/videos/{filename}")
+    # Save Video URL
+    saved_video_url = video_url
         
     # Save Floor Plan
     saved_floorplan = None
@@ -267,8 +263,11 @@ async def create_property(
         "featured": featured,
         "description": description or "Sin descripción disponible.",
         "images": saved_images,
-        "videos": saved_videos,
+        "video_url": saved_video_url,
         "floorplan": saved_floorplan,
+        "reserved": reserved,
+        "alquilado": alquilado,
+        "vendido": vendido,
         "latitude": lat,
         "longitude": lng
     }
@@ -294,8 +293,11 @@ async def update_property(
     latitude: Optional[str] = Form(None),
     longitude: Optional[str] = Form(None),
     images: Optional[List[UploadFile]] = File(None),
-    video: Optional[UploadFile] = File(None),
+    video_url: Optional[str] = Form(None),
     floorplan: Optional[UploadFile] = File(None),
+    reserved: bool = Form(False),
+    alquilado: bool = Form(False),
+    vendido: bool = Form(False),
     username: str = Depends(authenticate_admin)
 ):
     properties = load_properties()
@@ -327,15 +329,10 @@ async def update_property(
         if new_images:
             saved_images = new_images
             
-    # Update Video (only if new one is uploaded)
-    saved_videos = current_prop.get("videos", [])
-    if video and video.filename:
-        ext = os.path.splitext(video.filename)[1]
-        filename = f"{uuid.uuid4()}{ext}"
-        file_path = os.path.join(VIDEOS_DIR, filename)
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(video.file, buffer)
-        saved_videos = [f"/static/uploads/videos/{filename}"]
+    # Update Video URL
+    saved_video_url = current_prop.get("video_url")
+    if video_url is not None:
+        saved_video_url = video_url
         
     # Update Floor Plan (only if new one is uploaded)
     saved_floorplan = current_prop.get("floorplan")
@@ -379,8 +376,11 @@ async def update_property(
         "featured": featured,
         "description": description or "Sin descripción disponible.",
         "images": saved_images,
-        "videos": saved_videos,
+        "video_url": saved_video_url,
         "floorplan": saved_floorplan,
+        "reserved": reserved,
+        "alquilado": alquilado,
+        "vendido": vendido,
         "latitude": lat,
         "longitude": lng
     }
@@ -419,16 +419,7 @@ async def delete_property(id: int, username: str = Depends(authenticate_admin)):
         except Exception as e:
             print(f"Error deleting image {image_url}: {e}")
             
-    # Delete videos
-    for video_url in property_to_delete.get("videos", []):
-        try:
-            if video_url.startswith("/static/"):
-                relative_path = video_url[1:]
-                file_path = os.path.join(os.getcwd(), relative_path.replace("/", os.sep))
-                if os.path.exists(file_path):
-                    os.remove(file_path)
-        except Exception as e:
-            print(f"Error deleting video {video_url}: {e}")
+    # Video URL cleanup (nothing to delete on disk for YouTube links)
             
     # Remove from list and save
     properties.pop(prop_index)

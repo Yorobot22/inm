@@ -29,6 +29,19 @@ function renderPropertyDetail(prop) {
     document.getElementById('loading').style.display = 'none';
     document.getElementById('detailContent').style.display = 'block';
 
+    if (prop.vendido || prop.alquilado || prop.reserved) {
+        const ribbon = document.createElement('div');
+        ribbon.className = 'reserved-ribbon';
+        if (prop.vendido) {
+            ribbon.innerText = 'VENDIDO';
+        } else if (prop.alquilado) {
+            ribbon.innerText = 'ALQUILADO';
+        } else {
+            ribbon.innerText = 'RESERVADO';
+        }
+        document.getElementById('mainMediaContainer').appendChild(ribbon);
+    }
+
     document.title = `${prop.title} - Agustín González Afonso`;
 
     document.getElementById('title').innerText = prop.title;
@@ -164,10 +177,10 @@ function renderPropertyDetail(prop) {
     }
 
     // Video Logic - Enable video button if property has videos
-    if (prop.videos && prop.videos.length > 0) {
+    if (prop.video_url) {
         // Call the function defined in property_detail.html to enable video button
         if (typeof window.enableVideoButton === 'function') {
-            window.enableVideoButton(prop.videos[0]);
+            window.enableVideoButton(prop.video_url);
         }
     }
 

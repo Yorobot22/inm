@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - Agustín González Afonso</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css?v=1.3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .admin-container {
@@ -171,7 +171,28 @@
                         <label>Destacada</label>
                         <select name="featured">
                             <option value="true">Sí</option>
+                            <option value="false" selected>No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>¿Reservada?</label>
+                        <select name="reserved">
                             <option value="false">No</option>
+                            <option value="true">Sí (Mostrar Cartel)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>¿Alquilada?</label>
+                        <select name="alquilado">
+                            <option value="false">No</option>
+                            <option value="true">Sí (Mostrar Cartel)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>¿Vendido?</label>
+                        <select name="vendido">
+                            <option value="false">No</option>
+                            <option value="true">Sí (Mostrar Cartel)</option>
                         </select>
                     </div>
                     <div class="form-group full-width">
@@ -186,8 +207,11 @@
                             rows="5"></textarea>
                     </div>
                     <div class="form-group full-width">
-                        <label>Video (Opcional)</label>
-                        <input type="file" name="video" accept="video/*">
+                        <label>Video de YouTube (Opcional)</label>
+                        <input type="text" name="video_url"
+                            placeholder="Ej: https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                        <p style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">*Pega el link completo del video
+                            de YouTube.</p>
                     </div>
                     <div class="form-group full-width">
                         <label>Plano (Opcional - JPG/PNG)</label>
@@ -220,7 +244,7 @@
         </div>
     </main>
 
-    <script src="/static/js/admin.js"></script>
+    <script src="/static/js/admin.js?v=1.3"></script>
 </body>
 
 </html>

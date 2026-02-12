@@ -108,10 +108,14 @@ async function editProperty(id) {
         form.surface.value = prop.surface;
         form.bedrooms.value = prop.bedrooms;
         form.bathrooms.value = prop.bathrooms;
-        form.featured.value = prop.featured.toString();
+        form.featured.value = (prop.featured !== undefined ? prop.featured : false).toString();
+        form.reserved.value = (prop.reserved !== undefined ? prop.reserved : false).toString();
+        form.alquilado.value = (prop.alquilado !== undefined ? prop.alquilado : false).toString();
+        form.vendido.value = (prop.vendido !== undefined ? prop.vendido : false).toString();
         form.description.value = prop.description;
         form.latitude.value = prop.latitude || '';
         form.longitude.value = prop.longitude || '';
+        form.video_url.value = prop.video_url || '';
 
         // Enter edit mode UI
         isEditMode = true;

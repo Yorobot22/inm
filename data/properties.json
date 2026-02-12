@@ -7,7 +7,7 @@
         "type": "Oficina",
         "operation": "Alquiler",
         "surface": 111,
-        "bedrooms": 4,
+        "bedrooms": 5,
         "bathrooms": 2,
         "featured": true,
         "description": "Oficina comercial en alquiler ubicada en Parque Patricios, ideal para uso comercial. Cuenta con 111 m2 de superficie construida y 213 m2 de superficie total, distribuida en 2 plantas. Dispone de 4 ambientes y 2 baños, apta para uso profesional y con excelente luminosidad.\r\nLa oficina es ideal para oficinas y tiene una antigüedad de 40 años. La zona de Parque Patricios ofrece fácil acceso a transporte público, incluyendo diversas líneas de autobuses y cercanía a la estación de subte. En los alrededores, se encuentran comercios, bancos y servicios esenciales. Además, la zona cuenta con una creciente oferta gastronómica y espacios verdes para disfrutar. Es una zona mixta, con un ambiente dinámico y en constante desarrollo.\r\n- A ½ cuadra de Avenida Caseros y a 200mtrs de la estación Parque Patricios del subte H\r\n- En el corazón del Distrito Tecnológico y área comercial de Parque Patricios\r\n- Sin expensas, gas instalado (no está actualmente en uso) e instalación eléctrica.\r\n- Sólo uso profesional / comercial\r\n",
@@ -20,10 +20,11 @@
             "/static/uploads/images/d4f03093-8ec9-4f16-814c-96a754bc461a.jpeg",
             "/static/uploads/images/fafabfe4-7c04-43d1-8007-b5a7fae3c75a.jpeg"
         ],
-        "videos": [
-            "/static/uploads/videos/e506b533-bb15-4a36-8c04-bd0ec99858d4.mp4"
-        ],
+        "video_url": "https://youtu.be/T2NSRPyIrpI",
         "floorplan": "/static/uploads/images/79e9fe13-d2af-484a-a55c-c74434532501.jpeg",
+        "reserved": false,
+        "alquilado": false,
+        "vendido": false,
         "latitude": -34.63609,
         "longitude": -58.40379
     },
@@ -35,7 +36,7 @@
         "type": "Departamento",
         "operation": "Venta",
         "surface": 70,
-        "bedrooms": 2,
+        "bedrooms": 3,
         "bathrooms": 2,
         "featured": true,
         "description": "Departamento en venta en Villa Urquiza, con una superficie total de 70 m². Cuenta con 2 dormitorios y 2 baños, ideal para familias o profesionales. La propiedad, con disposición al frente y orientación Oeste, goza de gran luminosidad gracias a sus amplios ambientes.\r\nEl departamento dispone de un living comedor, balcón y dormitorio en suite, ofreciendo confort y privacidad. La cocina está integrada al living, creando un espacio social y funcional. Además, el edificio cuenta con ascensor y admite mascotas, siendo también apto para uso profesional. El aire acondicionado frio/calor y la calefacción asegura un ambiente ideal durante todo el año.\r\nUbicado en un edificio de 4 pisos con 3 unidades por planta, este departamento se encuentra en una zona residencial tranquila, pero con fácil acceso a servicios. \r\nVilla Urquiza ofrece una amplia variedad de comercios, supermercados y opciones de transporte público, incluyendo varias líneas de colectivos y cercanía a estaciones de subte. La zona también cuenta con espacios verdes y centros educativos, ideal para un estilo de vida equilibrado.\r\nActualmente tiene renta por 1 año",
@@ -50,10 +51,9 @@
             "/static/uploads/images/24ff9377-8c81-4a35-a1a5-fd3d19e9c8f0.jpeg",
             "/static/uploads/images/4102d6ac-dfb4-42d1-b9d4-5670e9ee0cd1.png"
         ],
-        "videos": [
-            "/static/uploads/videos/34829f61-9bc7-4911-be0b-e2936cc4384b.mp4"
-        ],
+        "video_url": null,
         "floorplan": "/static/uploads/images/1e4a982d-6046-4505-8cb8-e85c440854ab.jpeg",
+        "reserved": true,
         "latitude": -34.56272,
         "longitude": -58.49066
     },
@@ -65,7 +65,7 @@
         "type": "Departamento",
         "operation": "Venta",
         "surface": 45,
-        "bedrooms": 1,
+        "bedrooms": 2,
         "bathrooms": 1,
         "featured": true,
         "description": "Oportunidad Estratégica: Unidad de Alta Demanda en Núñez\r\n\r\nPresentamos una propiedad con potencial de renta maximizado gracias a su ubicación premium en una de las zonas de mayor crecimiento de CABA. Situado en un edificio en excelente estado, este departamento de 2 ambientes al frente es un activo seguro para alquileres tradicionales o temporarios.\r\n\r\nFactores clave de inversión:\r\n\r\n* Ubicación táctica: A metros del Metrobus, Subte D y rodeado de universidades de prestigio y empresas de primera línea.\r\n* Proximidad estratégica: Vecino al Parque de la Innovación, el nuevo hub de desarrollo urbano de la ciudad.\r\n* Tipología buscada: 3er piso al frente con balcón corrido, cocina independiente y lavadero.\r\n\r\nUna pieza inmobiliaria versátil, ideal para captar el público de estudiantes y jóvenes corporativos que hoy traccionan el mercado de Núñez.  ",
@@ -76,10 +76,11 @@
             "/static/uploads/images/46282f4a-857e-477a-8c11-ce930b5a643f.jpeg",
             "/static/uploads/images/6ac84e8d-b6eb-41f5-965a-774296dfc034.jpeg"
         ],
-        "videos": [
-            "/static/uploads/videos/21e58085-b360-4199-b352-bc86faf0be2a.mp4"
-        ],
+        "video_url": null,
         "floorplan": null,
+        "reserved": false,
+        "alquilado": false,
+        "vendido": false,
         "latitude": -34.55237,
         "longitude": -58.46727
     }

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle de Propiedad - Agustín González Afonso</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css?v=1.3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
@@ -35,6 +35,23 @@
             object-fit: cover;
             transition: var(--transition);
             cursor: zoom-in;
+        }
+
+        #mainVideoContainer {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+        }
+
+        #mainVideoContainer iframe {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            max-height: 100%;
+            border: none;
         }
 
         /* Lightbox Styles */
@@ -272,7 +289,13 @@
             aspect-ratio: 16 / 9;
             border-radius: var(--radius-lg);
             overflow: hidden;
-            background: #000;
+            background: #fff;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         .video-container video {
@@ -474,9 +497,11 @@
                         <i class="fas fa-chevron-left"></i>
                     </button>
                     <img src="" id="mainImg" class="main-img" alt="Propiedad">
-                    <video id="mainVideo" class="main-img" style="display: none;" controls>
-                        Tu navegador no soporta el elemento de video.
-                    </video>
+                    <div id="mainVideoContainer" class="main-img" style="display: none; background: #fff;">
+                        <iframe id="mainYoutubeIframe" src="" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
                     <div id="mapContainer">
                         <div id="propertyMap"></div>
                     </div>
@@ -550,10 +575,8 @@
 
                     <div class="video-section" id="videoSection" style="display: none;">
                         <h3>VIDEO</h3>
-                        <div class="video-container">
-                            <video controls id="propertyVideo">
-                                Tu navegador no soporta el elemento de video.
-                            </video>
+                        <div class="video-container" id="propertyVideoContainer">
+                            <!-- Youtube iframe will be injected here if needed, or we use the main gallery one -->
                         </div>
                     </div>
                 </div>
@@ -614,9 +637,14 @@
             prevBtn.style.display = 'flex';
             nextBtn.style.display = 'flex';
 
-            // Hide video
-            mainVideo.style.display = 'none';
-            mainVideo.pause();
+            // Hide video and map
+            mainVideoContainer.style.display = 'none';
+            mainYoutubeIframe.src = '';
+            document.getElementById('mapContainer').style.display = 'none';
+
+            // Show ribbon if exists
+            const ribbon = document.querySelector('.reserved-ribbon');
+            if (ribbon) ribbon.style.display = 'block';
 
             // Restore current photo (in case we were viewing floor plan)
             if (typeof window.restoreCurrentPhoto === 'function') {
@@ -632,7 +660,8 @@
             if (!propertyVideoUrl) return;
 
             const mainImg = document.getElementById('mainImg');
-            const mainVideo = document.getElementById('mainVideo');
+            const mainVideoContainer = document.getElementById('mainVideoContainer');
+            const mainYoutubeIframe = document.getElementById('mainYoutubeIframe');
             const thumbsGrid = document.getElementById('thumbnails');
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
@@ -643,9 +672,16 @@
             prevBtn.style.display = 'none';
             nextBtn.style.display = 'none';
 
-            // Show and play video
-            mainVideo.src = propertyVideoUrl;
-            mainVideo.style.display = 'block';
+            // Hide ribbon if exists
+            const ribbon = document.querySelector('.reserved-ribbon');
+            if (ribbon) ribbon.style.display = 'none';
+
+            // Extract YouTube ID and set iframe src
+            const videoId = getYouTubeId(propertyVideoUrl);
+            if (videoId) {
+                mainYoutubeIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                mainVideoContainer.style.display = 'flex';
+            }
 
             // Update button states
             updateActiveButton('btnVideo');
@@ -654,22 +690,34 @@
             document.getElementById('gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
+        function getYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
         // Show floor plan view
         function showFloorplan() {
             if (!propertyFloorplanUrl) return;
 
-            const mainImg = document.getElementById('mainImg');
-            const mainVideo = document.getElementById('mainVideo');
+            const mainVideoContainer = document.getElementById('mainVideoContainer');
+            const mainYoutubeIframe = document.getElementById('mainYoutubeIframe');
+            const mapContainer = document.getElementById('mapContainer');
             const thumbsGrid = document.getElementById('thumbnails');
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
 
-            // Hide video and navigation
-            mainVideo.style.display = 'none';
-            mainVideo.pause();
+            // Hide video, map and navigation
+            mainVideoContainer.style.display = 'none';
+            mainYoutubeIframe.src = '';
+            mapContainer.style.display = 'none';
             thumbsGrid.style.display = 'none';
             prevBtn.style.display = 'none';
             nextBtn.style.display = 'none';
+
+            // Show ribbon if exists
+            const ribbon = document.querySelector('.reserved-ribbon');
+            if (ribbon) ribbon.style.display = 'block';
 
             // Show floor plan image
             mainImg.src = propertyFloorplanUrl;
@@ -718,8 +766,8 @@
         function showMap() {
             if (!propertyLatitude || !propertyLongitude) return;
 
-            const mainImg = document.getElementById('mainImg');
-            const mainVideo = document.getElementById('mainVideo');
+            const mainVideoContainer = document.getElementById('mainVideoContainer');
+            const mainYoutubeIframe = document.getElementById('mainYoutubeIframe');
             const thumbsGrid = document.getElementById('thumbnails');
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
@@ -727,11 +775,15 @@
 
             // Hide photo/video elements
             mainImg.style.display = 'none';
-            mainVideo.style.display = 'none';
-            mainVideo.pause();
+            mainVideoContainer.style.display = 'none';
+            mainYoutubeIframe.src = '';
             thumbsGrid.style.display = 'none';
             prevBtn.style.display = 'none';
             nextBtn.style.display = 'none';
+
+            // Hide ribbon if exists
+            const ribbon = document.querySelector('.reserved-ribbon');
+            if (ribbon) ribbon.style.display = 'none';
 
             // Show map
             mapContainer.style.display = 'block';

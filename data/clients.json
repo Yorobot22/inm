@@ -33,5 +33,16 @@
             "telefono": "1140764994",
             "mensaje": "Contacto 2 "
         }
+    },
+    {
+        "id": "a38dffdf",
+        "type": "Contacto",
+        "date": "2026-02-12 17:54:12",
+        "data": {
+            "nombre": "Sergio",
+            "email": "sergio@gonzalezafonso.com.ar",
+            "telefono": "1140764994",
+            "mensaje": "prueba 12/2/26"
+        }
     }
 ]
